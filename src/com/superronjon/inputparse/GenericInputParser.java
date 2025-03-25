@@ -73,7 +73,10 @@ public class GenericInputParser
 	}
 
 	public String getUnflaggedArgument(int i) {
-		return dangling.get(i);
+		if(0 <= i && i < dangling.size()) {
+			return dangling.get(i);
+		}
+		return null;
 	}
 
 	private Option getOptionWithFlag(char flag) {
