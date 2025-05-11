@@ -5,18 +5,21 @@ public class Option {
 	private final boolean takesArgument;
 	private boolean wasGiven;
 	private String value;
+	private final String name;
 
-	public Option(char flag, boolean takesArgument, String defaultValue) {
+	public Option(char flag, String name, boolean takesArgument, String defaultValue) {
 		this.takesArgument = takesArgument;
 		this.flag = flag;
 		this.value = defaultValue;
 		this.wasGiven = false;
+		this.name = name;
 	}
 
-	public Option(char flag) {
+	public Option(char flag, String name) {
 		this.takesArgument = false;
 		this.flag = flag;
 		this.value = "False";
+		this.name = name;
 	}
 
 	public void setValue(String val) {
@@ -25,11 +28,21 @@ public class Option {
 	}
 
 	public void setValue() {
-		this.value = "True";
+		this.setValue(true);
+	}
+
+	public void setValue(boolean val) {
+		if(val) {
+			this.value = "True";
+		}
+		else {
+			this.value = "False";
+		}
 		this.wasGiven = true;
 	}
 
 	public char getFlag() { return this.flag; }
+	public String getName() { return this.name; }
 	public boolean getTakesArgument() { return this.takesArgument; }
 	public String getValue() { return this.value; }
 	public boolean getWasGiven() { return this.wasGiven; }

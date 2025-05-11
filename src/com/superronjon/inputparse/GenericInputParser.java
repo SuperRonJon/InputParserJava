@@ -24,7 +24,19 @@ public class GenericInputParser
 		Map<Character, Integer> indices = new HashMap<>();
 		for(int i = 0; i < tokens.size(); i++) {
 			String token = tokens.get(i);
-			if(token.startsWith("-")) {
+			if(token.startsWith("--")) {
+				String commandName = token.substring(2);
+				Option currentOption = getOptionWithName(commandName);
+				if(currentOption != null) {
+					if(currentOption.getTakesArgument()) {
+						indices.put(currentOption.getFlag(), i + 1);
+					}
+					else {
+						currentOption.setValue();
+					}
+				}
+			}
+			else if(token.startsWith("-")) {
 				int plusIndex = 1;
 				String options = token.substring(1);
 				for(int j = 0; j < options.length(); j++) {
@@ -59,11 +71,26 @@ public class GenericInputParser
 		this.expectedOptions.add(option);
 	}
 
+	public void addOption(char flag, String name) {
+		this.expectedOptions.add(new Option(flag, name));
+	}
+
+	public void addOption(char flag, String name, boolean takesArgument, String defaultValue) {
+		this.expectedOptions.add(new Option(flag, name, takesArgument, defaultValue));
+	}
+
 	public String getOptionValue(char flag) {
-		for (Option option : expectedOptions) {
-			if(option.getFlag() == flag) {
-				return option.getValue();
-			}
+		Option foundOption = getOptionWithFlag(flag);
+		if(foundOption != null) {
+			return foundOption.getValue();
+		}
+		return null;
+	}
+
+	public String getOptionValue(String name) {
+		Option foundOption = getOptionWithName(name);
+		if (foundOption != null) {
+			return foundOption.getValue();
 		}
 		return null;
 	}
@@ -82,6 +109,15 @@ public class GenericInputParser
 	private Option getOptionWithFlag(char flag) {
 		for (Option option : expectedOptions) {
 			if(option.getFlag() == flag) {
+				return option;
+			}
+		}
+		return null;
+	}
+
+	private Option getOptionWithName(String name) {
+		for (Option option : expectedOptions) {
+			if(option.getName().equals(name)) {
 				return option;
 			}
 		}
