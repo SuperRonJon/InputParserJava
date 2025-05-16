@@ -18,7 +18,8 @@ public class GenericInputParser
 		dangling = new ArrayList<>();
 	}
 
-	public void parseInput(String[] args) {
+	public void parseInput(String[] args) throws UnrecognizedOptionException
+	{
 		tokens.addAll(Arrays.asList(args));
 
 		Map<Character, Integer> indices = new HashMap<>();
@@ -35,6 +36,9 @@ public class GenericInputParser
 						currentOption.setValue();
 					}
 				}
+				else {
+					throw new UnrecognizedOptionException("Error: Command \"" + commandName + "\" not recognized...");
+				}
 			}
 			else if(token.startsWith("-")) {
 				int plusIndex = 1;
@@ -49,6 +53,9 @@ public class GenericInputParser
 						else {
 							currentOption.setValue();
 						}
+					}
+					else {
+						throw new UnrecognizedOptionException("Error: Option \"" + options.charAt(j) + "\" not recognized...");
 					}
 				}
 			}
