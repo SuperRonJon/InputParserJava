@@ -12,10 +12,34 @@ public class GenericInputParser
 	private final List<Option> expectedOptions;
 	private final List<String> dangling;
 
+	private final String programName;
+	private final String usageString;
+
 	public GenericInputParser() {
 		tokens = new ArrayList<>();
 		expectedOptions = new ArrayList<>();
 		dangling = new ArrayList<>();
+
+		programName = "";
+		usageString = "";
+	}
+
+	public GenericInputParser(String name) {
+		tokens = new ArrayList<>();
+		expectedOptions = new ArrayList<>();
+		dangling = new ArrayList<>();
+
+		programName = name;
+		usageString = "";
+	}
+
+	public GenericInputParser(String name, String usage) {
+		tokens = new ArrayList<>();
+		expectedOptions = new ArrayList<>();
+		dangling = new ArrayList<>();
+
+		programName = name;
+		usageString = usage;
 	}
 
 	public void parseInput(String[] args) throws UnrecognizedOptionException
@@ -82,8 +106,16 @@ public class GenericInputParser
 		this.expectedOptions.add(new Option(flag, name));
 	}
 
+	public void addOption(char flag, String name, String description) {
+		this.expectedOptions.add(new Option(flag, name, description));
+	}
+
 	public void addOption(char flag, String name, boolean takesArgument, String defaultValue) {
 		this.expectedOptions.add(new Option(flag, name, takesArgument, defaultValue));
+	}
+
+	public void addOption(char flag, String name, boolean takesArgument, String defaultValue, String description) {
+		this.expectedOptions.add(new Option(flag, name, takesArgument, defaultValue, description));
 	}
 
 	public String getOptionValue(char flag) {
@@ -111,6 +143,29 @@ public class GenericInputParser
 			return dangling.get(i);
 		}
 		return null;
+	}
+
+	public void printHelp() {
+		boolean printed = false;
+		if(!this.programName.isEmpty()) {
+			System.out.printf("%s", this.programName);
+			printed = true;
+		}
+		if(!this.usageString.isEmpty()) {
+			System.out.printf(" - Usage: %s\n", this.usageString);
+		}
+		else if(printed) {
+			System.out.println();
+		}
+		System.out.println("Available Options\n=================");
+		for (Option option : expectedOptions) {
+			if(!option.getTakesArgument()) {
+				System.out.printf("\t--%s, -%c %83s\n", option.getName(), option.getFlag(), option.getDescription());
+			}
+			else {
+				System.out.printf("\t--%s, -%c VAL %80s\n", option.getName(), option.getFlag(), option.getDescription());
+			}
+		}
 	}
 
 	private Option getOptionWithFlag(char flag) {
