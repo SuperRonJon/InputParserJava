@@ -2,6 +2,7 @@
 SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR/..
 rm -rf target/
+rm -rf out/InputParser.jar
 mkdir target
 javac --release 8 -d target/ src/com/superronjon/inputparse/*.java
 cd target
