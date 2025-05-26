@@ -63,7 +63,7 @@ public class Option {
 		this.wasGiven = true;
 	}
 
-	public char getFlag() { return this.flag; }
+	public Character getFlag() { return Character.valueOf(this.flag); }
 	public String getName() { return this.name; }
 	public boolean getTakesArgument() { return this.takesArgument; }
 	public String getValue() { return this.value; }

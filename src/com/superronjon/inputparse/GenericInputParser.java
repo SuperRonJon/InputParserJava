@@ -54,7 +54,7 @@ public class GenericInputParser
 				Option currentOption = getOptionWithName(commandName);
 				if(currentOption != null) {
 					if(currentOption.getTakesArgument()) {
-						indices.put(currentOption.getFlag(), i + 1);
+						indices.put(currentOption.getFlag(), Integer.valueOf(i + 1));
 					}
 					else {
 						currentOption.setValue();
@@ -71,7 +71,7 @@ public class GenericInputParser
 					Option currentOption = getOptionWithFlag(options.charAt(j));
 					if(currentOption != null) {
 						if(currentOption.getTakesArgument()) {
-							indices.put(currentOption.getFlag(), i + plusIndex);
+							indices.put(currentOption.getFlag(), Integer.valueOf(i + plusIndex));
 							plusIndex++;
 						}
 						else {
@@ -157,13 +157,13 @@ public class GenericInputParser
 		else if(printed) {
 			System.out.println();
 		}
-		System.out.println("Available Options\n=================");
+		System.out.println("Available Options:");
 		for (Option option : expectedOptions) {
 			if(!option.getTakesArgument()) {
-				System.out.printf("\t--%s, -%c %83s\n", option.getName(), option.getFlag(), option.getDescription());
+				System.out.printf(" --%s, -%c %83s\n", option.getName(), option.getFlag(), option.getDescription());
 			}
 			else {
-				System.out.printf("\t--%s, -%c VAL %80s\n", option.getName(), option.getFlag(), option.getDescription());
+				System.out.printf(" --%s, -%c VAL %80s\n", option.getName(), option.getFlag(), option.getDescription());
 			}
 		}
 	}
