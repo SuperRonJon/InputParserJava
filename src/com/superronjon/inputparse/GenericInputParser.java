@@ -158,14 +158,20 @@ public class GenericInputParser
 			System.out.println();
 		}
 		System.out.println("Available Options:");
+		int longestOption = getLongestOptionStringLength(expectedOptions) + 3;
 		for (Option option : expectedOptions) {
-			if(!option.getTakesArgument()) {
-				System.out.printf(" --%s, -%c %83s\n", option.getName(), option.getFlag(), option.getDescription());
-			}
-			else {
-				System.out.printf(" --%s, -%c VAL %80s\n", option.getName(), option.getFlag(), option.getDescription());
-			}
+			String optionHelp = option.getOptionFlagString(option);
+			System.out.printf("%-" + longestOption + "s %s\n", optionHelp, option.getDescription());
 		}
+	}
+
+	private int getLongestOptionStringLength(List<Option> expectedOptions) {
+		int longest = 0;
+		for(Option opt : expectedOptions) {
+			String helpString = opt.getOptionFlagString(opt);
+			if(helpString.length() > longest) longest = helpString.length();
+		}
+		return longest;
 	}
 
 	private Option getOptionWithFlag(char flag) {

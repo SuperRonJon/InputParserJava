@@ -63,6 +63,16 @@ public class Option {
 		this.wasGiven = true;
 	}
 
+	public String getOptionFlagString(Option opt) {
+		if(!opt.getTakesArgument()) {
+			return "--" + opt.getName() + ", -" + opt.getFlag();
+		}
+		else {
+			return "--" + opt.getName() + ", -" + opt.getFlag() + " VAL";
+		}
+	}
+
+
 	public Character getFlag() { return Character.valueOf(this.flag); }
 	public String getName() { return this.name; }
 	public boolean getTakesArgument() { return this.takesArgument; }
