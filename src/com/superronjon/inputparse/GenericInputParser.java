@@ -12,7 +12,7 @@ public class GenericInputParser
     private final List<Option> expectedOptions;
     private final List<String> dangling;
 
-    private final String programName;
+    private final String programTitle;
     private final String usageString;
 
     public GenericInputParser() {
@@ -20,7 +20,7 @@ public class GenericInputParser
         expectedOptions = new ArrayList<>();
         dangling = new ArrayList<>();
 
-        programName = "";
+        programTitle = "";
         usageString = "";
     }
 
@@ -29,7 +29,7 @@ public class GenericInputParser
         expectedOptions = new ArrayList<>();
         dangling = new ArrayList<>();
 
-        programName = name;
+        programTitle = name;
         usageString = "";
     }
 
@@ -38,7 +38,7 @@ public class GenericInputParser
         expectedOptions = new ArrayList<>();
         dangling = new ArrayList<>();
 
-        programName = name;
+        programTitle = name;
         usageString = usage;
     }
 
@@ -147,21 +147,21 @@ public class GenericInputParser
 
     public void printHelp() {
         boolean printed = false;
-        if(!this.programName.isEmpty()) {
-            System.out.printf("%s", this.programName);
+        if(!this.programTitle.isEmpty()) {
+            System.out.printf("%s\n\n", this.programTitle);
             printed = true;
         }
         if(!this.usageString.isEmpty()) {
-            System.out.printf(" - Usage: %s\n", this.usageString);
+            System.out.printf("Usage:\n       %s\n", this.usageString);
         }
         else if(printed) {
             System.out.println();
         }
-        System.out.println("Available Options:");
+        System.out.println("Options:");
         int longestOption = getLongestOptionStringLength(expectedOptions) + 3;
         for (Option option : expectedOptions) {
             String optionHelp = option.getOptionFlagString(option);
-            System.out.printf("%-" + longestOption + "s %s\n", optionHelp, option.getDescription());
+            System.out.printf("  %-" + longestOption + "s %s\n", optionHelp, option.getDescription());
         }
     }
 
